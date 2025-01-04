@@ -32,7 +32,7 @@ const ForgotPassword = () => {
       setError(emailValidation.error);
       return;
     }
-
+ 
     setIsLoading(true);
 
     try {
