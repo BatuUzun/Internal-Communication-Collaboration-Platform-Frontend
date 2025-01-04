@@ -1,0 +1,94 @@
+/* Signup.css */
+
+.signup-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.signup-header {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.signup-input {
+  width: 100%; /* Ensures the input fills the available space */
+  padding: 10px; /* Adds padding inside the input */
+  margin-bottom: 15px; /* Adds spacing between inputs */
+  border: 1px solid #ccc; /* Adds a border for clarity */
+  border-radius: 5px; /* Rounds the corners */
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+.signup-input:focus {
+  border-color: #007bff; /* Highlights input on focus */
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Adds a glow effect on focus */
+}
+
+
+.signup-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.signup-button:disabled {
+  background-color: #a7c5eb;
+  cursor: not-allowed;
+}
+
+.signup-error-text {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.signup-message-text {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.signup-message-text.success {
+  color: green;
+}
+
+.signup-message-text.error {
+  color: red;
+}
+
+.navigation-text {
+  color: #007bff;
+  cursor: pointer;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.navigation-text:hover {
+  text-decoration: underline;
+}
+
+
+.remember-me-container {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.remember-me-container label {
+  margin-left: 8px;
+  font-size: 14px;
+  color: #333;
+}

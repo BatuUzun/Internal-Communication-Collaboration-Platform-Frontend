@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+// App.jsx
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import HomePage from './components/HomePage';
+import ForgotPassword from './components/ForgotPassword';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        {/* Redirect root URL to /login */}
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<LoginWrapper />} />
+        <Route path="/signup" element={<SignupWrapper />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+      </Routes>
+    </Router>
   );
-}
+};
+
+// Wrapper for Login Component to use navigate
+const LoginWrapper = () => {
+  const navigate = useNavigate();
+  return <Login onSwitchToSignup={() => navigate('/signup')} />;
+};
+
+// Wrapper for Signup Component to use navigate
+const SignupWrapper = () => {
+  const navigate = useNavigate();
+  return <Signup onSwitchToLogin={() => navigate('/login')} />;
+};
 
 export default App;
