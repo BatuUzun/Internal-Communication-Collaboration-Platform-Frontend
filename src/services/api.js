@@ -58,6 +58,8 @@ export const sendVerificationCode = async ({ userId, requestType }) => {
   const response = await apiClient.post('/verification-code-manager/create-code', {
     userId,
     requestType,
+  },{
+    withCredentials: true, // Include cookies in the request
   });
   return response.data; // Assuming API returns the created verification code
 };
@@ -77,4 +79,10 @@ export const updatePassword = async ({ id, newPassword }) => {
     newPassword,
   });
   return response.data;
+};
+
+// API call to check if the user is verified
+export const checkUserVerificationStatus = async (userId) => {
+  const response = await apiClient.get(`/verification-code-manager/is-verified/${userId}`);
+  return response.data; // Returns true if verified, otherwise false
 };

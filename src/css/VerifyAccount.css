@@ -1,0 +1,133 @@
+/* VerifyAccount.css */
+
+.verify-account-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.verify-account-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.verify-account-container p {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #555;
+}
+
+.resend-verification-button {
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.resend-verification-button:disabled {
+    background-color: #d3d3d3;
+    cursor: not-allowed;
+}
+
+.resend-verification-button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.verification-code-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.verification-code-container label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+.verification-code-input {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.verification-code-input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.verify-button {
+    background-color: #28a745;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.verify-button:disabled {
+    background-color: #d3d3d3;
+    cursor: not-allowed;
+}
+
+.verify-button:hover:not(:disabled) {
+    background-color: #218838;
+}
+
+.message-text {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.verify-account-container .error-text {
+    color: #dc3545; /* Red for error messages */
+}
+
+.verify-account-container .success-text {
+    color: #28a745; /* Green for success messages */
+}
+
+.redirect-container {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .redirect-button {
+    background-color: #ff6b6b;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .redirect-button:hover {
+    background-color: #e63946;
+  }
+  
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 24px;
+    color: #007bff;
+  }
+  

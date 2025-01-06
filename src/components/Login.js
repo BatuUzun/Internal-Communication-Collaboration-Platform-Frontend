@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { checkUserLogin } from '../services/api';
 import { validateEmail, validatePassword } from '../utils/validation';
 import '../css/Signup.css';
+import { setUser } from '../slices/userSlice';
+import { useDispatch } from 'react-redux';
 
 const Login = ({ onSwitchToSignup }) => {
   const [email, setEmail] = useState('');
@@ -11,31 +13,42 @@ const Login = ({ onSwitchToSignup }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
       setError('Please fill in all fields.');
       return;
     }
-
+  
     const emailValidation = validateEmail(email);
     if (!emailValidation.isValid) {
       setError(emailValidation.error);
       return;
     }
-
+  
     const passwordValidation = validatePassword(password);
     if (!passwordValidation.isValid) {
       setError(passwordValidation.error);
       return;
     }
-
+  
     setError(null);
     setIsLoading(true);
-
+  
     try {
-      await checkUserLogin({ email, password, rememberMe });
-      navigate('/home');
+      const response = await checkUserLogin({ email, password, rememberMe });
+      console.log('Login Response:', response);
+
+      const isVerified = response.verified === true;
+
+      dispatch(setUser({ id: response.id, email: response.email }));
+
+      if (!isVerified) {
+        navigate('/verify-account');
+      } else {
+        navigate('/home');
+      }
     } catch (err) {
       setError(
         typeof err === 'string'
@@ -47,8 +60,14 @@ const Login = ({ onSwitchToSignup }) => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
+
   return (
-    <div className="signup-container">
+    <div className="signup-container" onKeyDown={handleKeyDown}>
       <h1 className="signup-header">Login</h1>
       <input
         className="signup-input"
