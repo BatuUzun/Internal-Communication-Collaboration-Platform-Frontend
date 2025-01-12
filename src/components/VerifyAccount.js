@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie'; // Import js-cookie for cookie management
 import {
   sendVerificationCode,
   validateCode,
@@ -8,13 +8,13 @@ import {
 } from '../services/api';
 import { RequestType } from '../utils/enum';
 import { validateVerificationCode } from '../utils/validation';
+import LogoutButton from './LogoutButton'; // Import the reusable LogoutButton
 import '../css/VerifyAccount.css';
 
 const VerifyAccount = () => {
-  const { id, email } = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true); // For initial loading and other API calls
-  const [isVerifyingCode, setIsVerifyingCode] = useState(false); // Specific loading state for validateCode
+  const [isLoading, setIsLoading] = useState(true);
+  const [isVerifyingCode, setIsVerifyingCode] = useState(false);
   const [message, setMessage] = useState('');
   const [isMessageError, setIsMessageError] = useState(false);
   const [buttonText, setButtonText] = useState('Send Email');
@@ -28,13 +28,22 @@ const VerifyAccount = () => {
   // Ref to prevent duplicate API calls
   const hasCheckedVerification = useRef(false);
 
+  // Fetch `id` and `email` from cookies
+  const id = Cookies.get('userId');
+  const email = Cookies.get('userEmail');
+
   useEffect(() => {
     const checkVerificationStatus = async () => {
-      if (hasCheckedVerification.current) return; // Skip if already checked
+      if (hasCheckedVerification.current) return;
 
-      hasCheckedVerification.current = true; // Mark as checked
+      hasCheckedVerification.current = true;
       try {
         console.log('Checking verification status...');
+        if (!id || !email) {
+          navigate('/login'); // Redirect to login if cookies are missing
+          return;
+        }
+
         const isVerified = await checkUserVerificationStatus(id);
         if (isVerified) {
           navigate('/home'); // Navigate to home if already verified
@@ -45,7 +54,7 @@ const VerifyAccount = () => {
       } catch (error) {
         console.error('Error checking verification status:', error);
         if (error?.status === 404) {
-          navigate('/login'); // Navigate to login if the user does not exist
+          navigate('/login'); // Redirect to login if user does not exist
         } else {
           setIsLoading(false); // Show content in case of other errors
         }
@@ -56,9 +65,9 @@ const VerifyAccount = () => {
       setIsLoading(true); // Ensure loading state is reset on navigation
       checkVerificationStatus();
     } else {
-      navigate('/login'); // Navigate to login if no user ID is present
+      navigate('/login'); // Redirect to login if no user ID is present
     }
-  }, [id, navigate]);
+  }, [id, email, navigate]);
 
   useEffect(() => {
     let timer;
@@ -112,7 +121,7 @@ const VerifyAccount = () => {
     }
 
     try {
-      setIsVerifyingCode(true); // Start loading for validate code
+      setIsVerifyingCode(true);
       await validateCode({
         userId: id,
         verificationCode,
@@ -122,7 +131,7 @@ const VerifyAccount = () => {
       setMessage('Verification successful! Redirecting in 5 seconds...');
       setIsMessageError(false);
       setIsRedirectVisible(true);
-      setIsVerificationSuccessful(true); // Mark as successful to disable button
+      setIsVerificationSuccessful(true);
 
       setTimeout(() => {
         navigate('/home');
@@ -133,7 +142,7 @@ const VerifyAccount = () => {
       setIsRedirectVisible(false);
       setIsVerificationSuccessful(false);
     } finally {
-      setIsVerifyingCode(false); // End loading for validate code
+      setIsVerifyingCode(false);
     }
   };
 
@@ -147,6 +156,7 @@ const VerifyAccount = () => {
 
   return (
     <div className="verify-account-container">
+      <LogoutButton />
       <h1>Verify Your Account</h1>
       {email ? (
         <>

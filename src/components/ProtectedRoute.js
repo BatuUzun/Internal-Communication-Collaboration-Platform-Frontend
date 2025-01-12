@@ -1,9 +1,10 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
+import Cookies from 'js-cookie'; // Import js-cookie for cookie management
 
 const ProtectedRoute = ({ children }) => {
-  const { id, email } = useSelector((state) => state.user);
+  const id = Cookies.get('userId');
+  const email = Cookies.get('userEmail');
 
   // Check if user is logged in
   if (!id || !email) {

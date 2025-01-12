@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { checkUserLogin } from '../services/api';
 import { validateEmail, validatePassword } from '../utils/validation';
 import '../css/Signup.css';
-import { setUser } from '../slices/userSlice';
-import { useDispatch } from 'react-redux';
+import Cookies from 'js-cookie'; // Import js-cookie for easier cookie handling
 
 const Login = ({ onSwitchToSignup }) => {
   const [email, setEmail] = useState('');
@@ -13,7 +12,16 @@ const Login = ({ onSwitchToSignup }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
+  // Check if user is already logged in
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const userEmail = Cookies.get('userEmail');
+
+    if (userId && userEmail) {
+      navigate('/home'); // Navigate to home if user is already logged in
+    }
+  }, [navigate]);
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
@@ -39,11 +47,19 @@ const Login = ({ onSwitchToSignup }) => {
     try {
       const response = await checkUserLogin({ email, password, rememberMe });
       console.log('Login Response:', response);
-
+  
       const isVerified = response.verified === true;
-
-      dispatch(setUser({ id: response.id, email: response.email }));
-
+  
+      // Save user details in cookies
+      Cookies.set('userId', response.id, {
+        secure: false, // Set to false for local development
+        sameSite: 'Strict',
+      });
+      Cookies.set('userEmail', response.email, {
+        secure: false, // Set to false for local development
+        sameSite: 'Strict',
+      });
+  
       if (!isVerified) {
         navigate('/verify-account');
       } else {

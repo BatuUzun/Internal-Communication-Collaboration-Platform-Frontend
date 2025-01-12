@@ -12,15 +12,34 @@ const apiClient = axios.create({
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Log errors and handle 404 status for "not found" cases
+    // Check for 401 Unauthorized error
+    if (error.response?.status === 401) {
+      console.warn('Unauthorized access detected');
+
+      // Exclude the `checkUserLogin` API from triggering a redirect
+      if (!error.config.url.includes('/authentication/check-user-login')) {
+        // Redirect to the login page if not already there
+        if (window.location.pathname !== '/login') {
+          window.location.href = '/login';
+
+          // Optionally clear cookies if necessary
+          document.cookie = 'userId=; Max-Age=0; path=/;';
+          document.cookie = 'userEmail=; Max-Age=0; path=/;';
+        }
+      }
+    }
+
+    // Handle 404 errors (for debugging)
     if (error.response?.status === 404) {
-      console.warn('Email not found:', error.response.data); // Log for debugging
+      console.warn('Resource not found:', error.response.data);
       return Promise.resolve(error.response); // Treat 404 as a resolved response
     }
+
     console.error('API Error:', error);
     return Promise.reject(error.response?.data || { message: 'Something went wrong' });
   }
 );
+
 
 
 
@@ -85,4 +104,10 @@ export const updatePassword = async ({ id, newPassword }) => {
 export const checkUserVerificationStatus = async (userId) => {
   const response = await apiClient.get(`/verification-code-manager/is-verified/${userId}`);
   return response.data; // Returns true if verified, otherwise false
+};
+
+// Logout API call
+export const logout = async () => {
+  const response = await apiClient.post('/authentication/logout');
+  return response.data;
 };
