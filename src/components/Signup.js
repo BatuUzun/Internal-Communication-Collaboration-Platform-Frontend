@@ -47,14 +47,20 @@ const Signup = ({ onSwitchToLogin }) => {
       setMessage({ type: 'success', text: 'User created successfully.' });
       setError(null); // Ensure no error message is shown
     } catch (err) {
-      const errorMessage = err.includes('Email already exists')
-        ? 'The email address is already taken. Please use a different email.'
-        : 'An error occurred during signup.';
+      let errorMessage = 'An error occurred during signup.';
+    
+      if (typeof err === 'string' && err.includes('Email already exists')) {
+        errorMessage = 'The email address is already taken. Please use a different email.';
+      } else if (err?.message?.includes('Email already exists')) {
+        errorMessage = 'The email address is already taken. Please use a different email.';
+      }
+    
       setError(errorMessage);
       setMessage(null); // Clear success message
     } finally {
       setIsLoading(false);
     }
+    
   };
 
   return (
