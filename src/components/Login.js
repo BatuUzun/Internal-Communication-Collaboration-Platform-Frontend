@@ -19,7 +19,7 @@ const Login = ({ onSwitchToSignup }) => {
     const userEmail = Cookies.get('userEmail');
 
     if (userId && userEmail) {
-      navigate('/home'); // Navigate to home if user is already logged in
+      navigate('/home'); // Navigate to home if user is already logged in 
     }
   }, [navigate]);
 
