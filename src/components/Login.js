@@ -28,7 +28,7 @@ const Login = ({ onSwitchToSignup }) => {
       setError('Please fill in all fields.');
       return;
     }
-  
+   
     const emailValidation = validateEmail(email);
     if (!emailValidation.isValid) {
       setError(emailValidation.error);
