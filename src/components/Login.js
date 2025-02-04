@@ -12,7 +12,7 @@ const Login = ({ onSwitchToSignup }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
+ 
   // Check if user is already logged in
   useEffect(() => {
     const userId = Cookies.get('userId');
